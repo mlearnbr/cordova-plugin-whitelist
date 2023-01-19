@@ -22,32 +22,32 @@ package org.apache.cordova.whitelist;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.ConfigXmlParser;
 import org.apache.cordova.LOG;
-import org.apache.cordova.Whitelist;
+import org.apache.cordova.AllowList;
 import org.xmlpull.v1.XmlPullParser;
 
 import android.content.Context;
 
 public class WhitelistPlugin extends CordovaPlugin {
     private static final String LOG_TAG = "WhitelistPlugin";
-    private Whitelist allowedNavigations;
-    private Whitelist allowedIntents;
-    private Whitelist allowedRequests;
+    private AllowList allowedNavigations;
+    private AllowList allowedIntents;
+    private AllowList allowedRequests;
 
     // Used when instantiated via reflection by PluginManager
     public WhitelistPlugin() {
     }
     // These can be used by embedders to allow Java-configuration of whitelists.
     public WhitelistPlugin(Context context) {
-        this(new Whitelist(), new Whitelist(), null);
+        this(new AllowList(), new AllowList(), null);
         new CustomConfigXmlParser().parse(context);
     }
     public WhitelistPlugin(XmlPullParser xmlParser) {
-        this(new Whitelist(), new Whitelist(), null);
+        this(new AllowList(), new AllowList(), null);
         new CustomConfigXmlParser().parse(xmlParser);
     }
-    public WhitelistPlugin(Whitelist allowedNavigations, Whitelist allowedIntents, Whitelist allowedRequests) {
+    public WhitelistPlugin(AllowList allowedNavigations, AllowList allowedIntents, AllowList allowedRequests) {
         if (allowedRequests == null) {
-            allowedRequests = new Whitelist();
+            allowedRequests = new AllowList();
             allowedRequests.addWhiteListEntry("file:///*", false);
             allowedRequests.addWhiteListEntry("data:*", false);
         }
@@ -58,9 +58,9 @@ public class WhitelistPlugin extends CordovaPlugin {
     @Override
     public void pluginInitialize() {
         if (allowedNavigations == null) {
-            allowedNavigations = new Whitelist();
-            allowedIntents = new Whitelist();
-            allowedRequests = new Whitelist();
+            allowedNavigations = new AllowList();
+            allowedIntents = new AllowList();
+            allowedRequests = new AllowList();
             new CustomConfigXmlParser().parse(webView.getContext());
         }
     }
@@ -135,27 +135,27 @@ public class WhitelistPlugin extends CordovaPlugin {
         return null; // Default policy
     }
 
-    public Whitelist getAllowedNavigations() {
+    public AllowList getAllowedNavigations() {
         return allowedNavigations;
     }
 
-    public void setAllowedNavigations(Whitelist allowedNavigations) {
+    public void setAllowedNavigations(AllowList allowedNavigations) {
         this.allowedNavigations = allowedNavigations;
     }
 
-    public Whitelist getAllowedIntents() {
+    public AllowList getAllowedIntents() {
         return allowedIntents;
     }
 
-    public void setAllowedIntents(Whitelist allowedIntents) {
+    public void setAllowedIntents(AllowList allowedIntents) {
         this.allowedIntents = allowedIntents;
     }
 
-    public Whitelist getAllowedRequests() {
+    public AllowList getAllowedRequests() {
         return allowedRequests;
     }
 
-    public void setAllowedRequests(Whitelist allowedRequests) {
+    public void setAllowedRequests(AllowList allowedRequests) {
         this.allowedRequests = allowedRequests;
     }
 }
